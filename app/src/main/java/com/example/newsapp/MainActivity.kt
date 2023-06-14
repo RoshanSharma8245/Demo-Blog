@@ -12,10 +12,12 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.newsapp.adapters.FragmentAdapter
 import com.example.newsapp.architecture.NewsViewModel
+import com.example.newsapp.databinding.ActivityMainBinding
 import com.example.newsapp.utils.Constants.BUSINESS
 import com.example.newsapp.utils.Constants.ENTERTAINMENT
 import com.example.newsapp.utils.Constants.GENERAL
@@ -39,28 +41,24 @@ class MainActivity : AppCompatActivity() {
     )
 
     private lateinit var viewModel: NewsViewModel
-    private lateinit var tabLayout: TabLayout
-    private lateinit var viewPager: ViewPager2
     private lateinit var fragmentAdapter: FragmentAdapter
-    private lateinit var shimmerLayout: ShimmerFrameLayout
     private var totalRequestCount = 0
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         // Set Action Bar
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
 
-        tabLayout = findViewById(R.id.tab_layout)
-        viewPager = findViewById(R.id.view_pager)
-        shimmerLayout = findViewById(R.id.shimmer_layout)
         viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
 
 
         if (!isNetworkAvailable(applicationContext)) {
-            shimmerLayout.visibility = View.GONE
+            binding.shimmerLayout.visibility = View.GONE
             val showError: TextView = findViewById(R.id.display_error)
             showError.text = getString(R.string.internet_warming)
             showError.visibility = View.VISIBLE
@@ -76,8 +74,8 @@ class MainActivity : AppCompatActivity() {
         requestNews(TECHNOLOGY, techNews)
 
         fragmentAdapter = FragmentAdapter(supportFragmentManager, lifecycle)
-        viewPager.adapter = fragmentAdapter
-        viewPager.visibility = View.GONE
+        binding.viewPager.adapter = fragmentAdapter
+        binding.viewPager.visibility = View.GONE
 
     }
 
@@ -89,22 +87,22 @@ class MainActivity : AppCompatActivity() {
 
             // If main fragment loaded then attach the fragment to viewPager
             if (newsCategory == GENERAL) {
-                shimmerLayout.stopShimmer()
-                shimmerLayout.hideShimmer()
-                shimmerLayout.visibility = View.GONE
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.hideShimmer()
+                binding.shimmerLayout.visibility = View.GONE
                 setViewPager()
             }
 
             if (totalRequestCount == TOTAL_NEWS_TAB) {
-                viewPager.offscreenPageLimit = 7
+                binding.viewPager.offscreenPageLimit = 7
             }
         }
     }
 
     private fun setViewPager() {
         if (!apiRequestError) {
-            viewPager.visibility = View.VISIBLE
-            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            binding.viewPager.visibility = View.VISIBLE
+            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
                 tab.text = newsCategories[position]
             }.attach()
         } else {

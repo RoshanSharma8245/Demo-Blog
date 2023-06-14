@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.example.newsapp.NewsModel
 import com.example.newsapp.R
 import com.example.newsapp.ReadNewsActivity
 import com.example.newsapp.adapters.CustomAdapter
+import com.example.newsapp.databinding.FragmentGeneralBinding
 import com.example.newsapp.utils.Constants.NEWS_CONTENT
 import com.example.newsapp.utils.Constants.NEWS_DESCRIPTION
 import com.example.newsapp.utils.Constants.NEWS_IMAGE_URL
@@ -31,33 +33,29 @@ import com.squareup.picasso.Picasso
 
 class GeneralFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var carouselView: CarouselView
     private lateinit var adapter: CustomAdapter
     private lateinit var newsDataForTopHeadlines: List<NewsModel>
     private lateinit var newsDataForDown: List<NewsModel>
     var position = INITIAL_POSITION
+    private lateinit var binding: FragmentGeneralBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_general, container, false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_general,container,false)
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = layoutManager
+        binding.recyclerView.layoutManager = layoutManager
 
         // Setting recyclerViews adapter
         newsDataForTopHeadlines = MainActivity.generalNews.slice(0 until TOP_HEADLINES_COUNT)
         newsDataForDown = MainActivity.generalNews.slice(TOP_HEADLINES_COUNT until MainActivity.generalNews.size - TOP_HEADLINES_COUNT)
         adapter = CustomAdapter(newsDataForDown)
-        recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
 
 
-        carouselView = view.findViewById<CarouselView>(R.id.home_carousel)
-
-        carouselView.apply {
+        binding.homeCarousel.apply {
             size = newsDataForTopHeadlines.size
             autoPlay = true
             indicatorAnimationType = IndicatorAnimationType.THIN_WORM

@@ -10,11 +10,13 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.adapters.CustomAdapter
 import com.example.newsapp.architecture.NewsViewModel
+import com.example.newsapp.databinding.ActivitySavedNewsBinding
 import com.example.newsapp.utils.Constants.NEWS_CONTENT
 import com.example.newsapp.utils.Constants.NEWS_DESCRIPTION
 import com.example.newsapp.utils.Constants.NEWS_IMAGE_URL
@@ -25,17 +27,18 @@ import com.example.newsapp.utils.Constants.NEWS_URL
 
 class SavedNewsActivity : AppCompatActivity() {
 
-    lateinit var recyclerView: RecyclerView
+//    lateinit var recyclerView: RecyclerView
     private lateinit var viewModel: NewsViewModel
     private lateinit var newsData: MutableList<NewsModel>
+    private lateinit var binding:ActivitySavedNewsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_saved_news)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_saved_news)
 
-        recyclerView = findViewById(R.id.recyclerView)
+//        recyclerView = findViewById(R.id.recyclerView)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recyclerView.layoutManager = layoutManager
+        binding.recyclerView.layoutManager = layoutManager
         newsData = mutableListOf()
 
         val adapter = CustomAdapter(newsData)
@@ -74,7 +77,7 @@ class SavedNewsActivity : AppCompatActivity() {
         adapter.setOnItemLongClickListener(object : CustomAdapter.OnItemLongClickListener {
             override fun onItemLongClick(position: Int) {
                 // Delete saved news dialog
-                recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.setBackgroundColor(
+                binding.recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.setBackgroundColor(
                     getThemeColor(com.google.android.material.R.attr.colorPrimaryVariant)
                 )
 
@@ -97,7 +100,7 @@ class SavedNewsActivity : AppCompatActivity() {
                     }
 
                     setNegativeButton("No") { _, _ ->
-                        recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.setBackgroundColor(
+                        binding.recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.setBackgroundColor(
                             getThemeColor(com.google.android.material.R.attr.colorPrimary)
                         )
                     }
@@ -107,7 +110,7 @@ class SavedNewsActivity : AppCompatActivity() {
             }
         })
 
-        recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
 
     }
 

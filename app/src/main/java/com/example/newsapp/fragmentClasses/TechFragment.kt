@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.example.newsapp.NewsModel
 import com.example.newsapp.R
 import com.example.newsapp.ReadNewsActivity
 import com.example.newsapp.adapters.CustomAdapter
+import com.example.newsapp.databinding.FragmentTechBinding
 import com.example.newsapp.utils.Constants.NEWS_CONTENT
 import com.example.newsapp.utils.Constants.NEWS_DESCRIPTION
 import com.example.newsapp.utils.Constants.NEWS_IMAGE_URL
@@ -23,18 +25,19 @@ import com.example.newsapp.utils.Constants.NEWS_URL
 
 class TechFragment : Fragment() {
 
+    private lateinit var binding: FragmentTechBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_tech, container, false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_tech,container,false)
         val newsData: MutableList<NewsModel> = MainActivity.techNews
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager =
+        binding.recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         val adapter = CustomAdapter(newsData)
-        recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
 
         adapter.setOnItemClickListener(object : CustomAdapter.OnItemClickListener {
 

@@ -15,8 +15,10 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.newsapp.architecture.NewsViewModel
+import com.example.newsapp.databinding.ActivityReadNewsBinding
 import com.example.newsapp.utils.Constants.NEWS_CONTENT
 import com.example.newsapp.utils.Constants.NEWS_DESCRIPTION
 import com.example.newsapp.utils.Constants.NEWS_IMAGE_URL
@@ -29,20 +31,18 @@ import java.util.*
 
 class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
-    private lateinit var newsWebView: WebView
     private lateinit var viewModel: NewsViewModel
     private lateinit var newsData: ArrayList<NewsModel>
     private lateinit var tts: TextToSpeech
+    private lateinit var binding: ActivityReadNewsBinding
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_read_news)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_read_news)
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
 
-        newsWebView = findViewById(R.id.news_webview)
         viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
 
         //loading data into list
@@ -63,7 +63,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         )
 
         // Webview
-        newsWebView.apply {
+        binding.newsWebview.apply {
             settings.apply {
                 domStorageEnabled = true
                 loadsImagesAutomatically = true
@@ -76,7 +76,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
 
         if (newsUrl != null) {
-            newsWebView.loadUrl(newsUrl)
+            binding.newsWebview.loadUrl(newsUrl)
         }
 
         //text to speech
