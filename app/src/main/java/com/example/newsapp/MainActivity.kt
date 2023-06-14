@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.newsapp.adapters.FragmentAdapter
 import com.example.newsapp.architecture.NewsViewModel
+import com.example.newsapp.utils.Constants
 import com.example.newsapp.utils.Constants.BUSINESS
 import com.example.newsapp.utils.Constants.ENTERTAINMENT
 import com.example.newsapp.utils.Constants.GENERAL
@@ -32,11 +33,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class MainActivity : AppCompatActivity() {
 
     // Tabs Title
-    private val newsCategories = arrayOf(
-        HOME, BUSINESS,
-        ENTERTAINMENT, SCIENCE,
-        SPORTS, TECHNOLOGY, HEALTH
-    )
+
 
     private lateinit var viewModel: NewsViewModel
     private lateinit var tabLayout: TabLayout
@@ -105,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         if (!apiRequestError) {
             viewPager.visibility = View.VISIBLE
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                tab.text = newsCategories[position]
+                tab.text = Constants.newsCategories[position]
             }.attach()
         } else {
             val showError: TextView = findViewById(R.id.display_error)
