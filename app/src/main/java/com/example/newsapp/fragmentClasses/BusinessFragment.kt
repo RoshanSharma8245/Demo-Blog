@@ -13,6 +13,7 @@ import com.example.newsapp.NewsModel
 import com.example.newsapp.R
 import com.example.newsapp.ReadNewsActivity
 import com.example.newsapp.adapters.CustomAdapter
+import com.example.newsapp.fragmentClasses.HomeNavHostFragment.Companion.businessNews
 import com.example.newsapp.utils.Constants.NEWS_CONTENT
 import com.example.newsapp.utils.Constants.NEWS_DESCRIPTION
 import com.example.newsapp.utils.Constants.NEWS_IMAGE_URL
@@ -29,7 +30,7 @@ class BusinessFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_business, container, false)
-        val newsData: MutableList<NewsModel> = MainActivity.businessNews
+        val newsData: MutableList<NewsModel> = businessNews
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

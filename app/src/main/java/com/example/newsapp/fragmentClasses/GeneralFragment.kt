@@ -15,6 +15,7 @@ import com.example.newsapp.NewsModel
 import com.example.newsapp.R
 import com.example.newsapp.ReadNewsActivity
 import com.example.newsapp.adapters.CustomAdapter
+import com.example.newsapp.fragmentClasses.HomeNavHostFragment.Companion.generalNews
 import com.example.newsapp.utils.Constants.NEWS_CONTENT
 import com.example.newsapp.utils.Constants.NEWS_DESCRIPTION
 import com.example.newsapp.utils.Constants.NEWS_IMAGE_URL
@@ -49,8 +50,8 @@ class GeneralFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
 
         // Setting recyclerViews adapter
-        newsDataForTopHeadlines = MainActivity.generalNews.slice(0 until TOP_HEADLINES_COUNT)
-        newsDataForDown = MainActivity.generalNews.slice(TOP_HEADLINES_COUNT until MainActivity.generalNews.size - TOP_HEADLINES_COUNT)
+        newsDataForTopHeadlines = generalNews.slice(0 until TOP_HEADLINES_COUNT)
+        newsDataForDown = generalNews.slice(TOP_HEADLINES_COUNT until generalNews.size - TOP_HEADLINES_COUNT)
         adapter = CustomAdapter(newsDataForDown)
         recyclerView.adapter = adapter
 

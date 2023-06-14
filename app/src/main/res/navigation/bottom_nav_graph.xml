@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_nav_graph.xml"
+    app:startDestination="@id/homeTabFragment">
+
+    <fragment
+        android:id="@+id/homeTabFragment"
+        android:name="com.example.newsapp.fragmentClasses.HomeNavHostFragment"
+        android:label="HomeTabFragment"
+        />
+
+    <fragment
+        android:id="@+id/generalFragment"
+        android:name="com.example.newsapp.fragmentClasses.GeneralFragment"
+        android:label="HomeTabFragment"
+        />
+    <fragment
+        android:id="@+id/searchTabFragment"
+        android:name="com.example.newsapp.fragmentClasses.SearchTabFragment"
+        android:label="SearchTabFragment" />
+    <fragment
+        android:id="@+id/premiumTabFragment"
+        android:name="com.example.newsapp.fragmentClasses.PremiumTabFragment"
+        android:label="FavouritesTabFragment" />
+    <fragment
+        android:id="@+id/accountTabFragment"
+        android:name="com.example.newsapp.fragmentClasses.AccountTabFragment"
+        android:label="AccountTabFragment" />
+
+</navigation>
