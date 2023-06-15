@@ -1,5 +1,6 @@
 package com.example.newsapp
 
+import ai.conscent.regularpaywalls.RegualarPaywall
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
@@ -9,13 +10,20 @@ import android.speech.tts.Voice
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.conscent.framework.core.Conscent
+import com.conscent.framework.core.ConscentWrapper
+import com.conscent.framework.core.OnConscentListener
 import com.example.newsapp.architecture.NewsViewModel
 import com.example.newsapp.databinding.ActivityReadNewsBinding
+import com.example.newsapp.utils.Constants.CONTENT_ID
 import com.example.newsapp.utils.Constants.NEWS_AUTHOR
 import com.example.newsapp.utils.Constants.NEWS_CONTENT
 import com.example.newsapp.utils.Constants.NEWS_DESCRIPTION
@@ -30,30 +38,62 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
-
-//    private lateinit var newsWebView: WebView
+class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnConscentListener {
+    val TAG = ReadNewsActivity::class.java.simpleName
     private lateinit var viewModel: NewsViewModel
     private lateinit var newsData: ArrayList<NewsModel>
     private lateinit var tts: TextToSpeech
     private lateinit var binding: ActivityReadNewsBinding
+    lateinit var conscentWrapper: ConscentWrapper
 
-    @SuppressLint("SetJavaScriptEnabled")
+    lateinit var conscent: Conscent
+    private var showSubscriptions: Boolean = false
+    private var scollLength:Int = 0
+
+    private lateinit var parent: ConstraintLayout
+    private lateinit var frame: FrameLayout
+
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        if (!showSubscriptions) {
+            conscent.checkContentAccess(
+                "",
+                "",
+                true,
+                showClose = false
+            )
+        } else {
+            conscent.checkSubscriptions(
+                "",
+                "",
+                false,
+            )
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_read_news)
+        binding = ActivityReadNewsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-//        newsWebView = findViewById(R.id.news_webview)
+        parent = findViewById(R.id.parent)
+        frame = findViewById(R.id.frame)
+
         viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
 
         //loading data into list
         newsData = ArrayList(1)
         val newsUrl = intent.getStringExtra(NEWS_URL)
+        val contentId:String? = intent.getStringExtra(CONTENT_ID)
+
+        ConscentWrapper.changeClientId("6336e56f047afa7cb875739e")
+
         val newsContent =
-            intent.getStringExtra(NEWS_CONTENT) + ". get paid version to hear full news. "
+            intent.getStringExtra(NEWS_CONTENT)
         newsData.add(
             NewsModel(
                 intent.getStringExtra(NEWS_TITLE)!!,
@@ -73,8 +113,6 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.author.text = newsData[0].author
         binding.date.text = newsData[0].time
 
-//        val date = newsData[0].time?.let { newsData[0].time?.substring(0, it.indexOf('T', 0)) }
-//        binding.date.text = date
 
         val input = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:SS'Z'")
         val output = SimpleDateFormat("dd/MM/yyyy")
@@ -96,26 +134,52 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             .error(R.drawable.samplenews)
             .into(binding.imgView)
 
-        // Webview
-//        newsWebView.apply {
-//            settings.apply {
-//                domStorageEnabled = true
-//                loadsImagesAutomatically = true
-//                mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-//                javaScriptEnabled = true
-//            }
-//            webViewClient = WebViewClient()
-//            webChromeClient = WebChromeClient()
-//        }
 
 
-//        if (newsUrl != null) {
-//            newsWebView.loadUrl(newsUrl)
-//        }
+
 
         //text to speech
         tts = TextToSpeech(this, this)
 
+
+        if (contentId != null) {
+
+            Log.d("contentId:",contentId)
+            conscent = ConscentWrapper.getConscentInstance(
+                this,
+                parent,
+                frame,
+                contentId,
+                this
+            )
+            RegualarPaywall.initRegularPaywall()
+
+            showSubscriptions = intent.getBooleanExtra("SHOW_SUBSCRIPTIONS", false)
+
+            onNewIntent(null)
+        }
+
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        Log.d("Touch", "touch_event_has_occured")
+        conscent.onTouch()
+        return super.dispatchTouchEvent(event)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        Log.i("Result", "RedirectionHandler.onActivityResult: ")
+        if (resultCode == RESULT_OK) {
+            if (data?.getStringExtra("TYPE") == "PLANS") {
+                conscent.checkSubscriptions(
+                    "TestingPreferences.getContentTitle()",
+                    "TestingPreferences.getSubscriptionUrl()",
+                )
+            } else
+                conscent.handledIntent()
+        }
     }
 
 
@@ -232,5 +296,29 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         tts.stop()
         tts.shutdown()
         super.onDestroy()
+    }
+
+    override fun onAdFree(clientId: String, contentId: String?) {
+        Log.d(TAG, "onAdFree: ")
+    }
+
+    override fun onBuyPass(clientId: String, contentId: String) {
+        Log.d(TAG, "onBuyPass: ")
+    }
+
+    override fun onError(clientId: String, contentId: String, errorMsg: String) {
+        Log.d(TAG, "onError: ")
+    }
+
+    override fun onSignIn(clientId: String, contentId: String) {
+        Log.d(TAG, "signIn: ")
+    }
+
+    override fun onSubscribe(clientId: String, contentId: String) {
+        Log.d(TAG, "onSubscribe: ")
+    }
+
+    override fun onSuccess(clientId: String, contentId: String) {
+        Log.d(TAG, "onSuccess: ")
     }
 }

@@ -3,12 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragmentClasses.SearchTabFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewSearchFaq"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Search" />
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchFaq"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:iconifiedByDefault="true"
+                app:searchIcon="@drawable/ic_search"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>
