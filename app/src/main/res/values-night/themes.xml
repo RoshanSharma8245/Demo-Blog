@@ -2,20 +2,21 @@
     <!-- Base application theme. -->
     <style name="Theme.NewsApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <item name="android:windowBackground">@color/black_for_bg</item>
+        <item name="android:windowBackground">@color/white</item>
 
-        <item name="colorPrimary">@color/black_for_bg</item>
-        <item name="colorPrimaryDark">@color/black_for_bg</item>
-        <item name="colorPrimaryVariant">@color/grey_black</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorPrimaryVariant">@color/grey_white</item>
+        <item name="colorOnPrimary">@color/dark_navy_blue</item>
+        <item name="android:textColorPrimary">@color/dark_navy_blue</item>
 
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/blue</item>
-        <item name="colorSecondaryVariant">@color/navy_blue</item>
+        <item name="colorSecondary">@color/navy_blue</item>
+        <item name="colorSecondaryVariant">@color/royal_blue</item>
+
         <item name="colorOnSecondary">@color/white</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:textColor">@color/dark_navy_blue</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
     </style>
 </resources>

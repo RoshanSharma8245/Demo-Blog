@@ -8,6 +8,7 @@
     android:padding="5dp"
     app:cardCornerRadius="10dp"
     app:cardElevation="1dp"
+    android:backgroundTint="@color/white"
     app:rippleColor="@android:color/transparent">
 
     <LinearLayout

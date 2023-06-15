@@ -98,8 +98,9 @@ class NewsRepository {
                         it.description,
                         it.url,
                         it.source.name,
+                        it.author,
                         it.publishedAt,
-                        it.content
+                        it.content,
                     )
                 )
             }

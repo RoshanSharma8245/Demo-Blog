@@ -23,6 +23,9 @@ data class NewsModel(
     @ColumnInfo(name = "source")
     val source: String?,
 
+    @ColumnInfo(name = "author")
+    val author: String?,
+
     @ColumnInfo(name = "time")
     val time: String?,
 

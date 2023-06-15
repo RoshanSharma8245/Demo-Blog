@@ -16,6 +16,7 @@ import com.example.newsapp.R
 import com.example.newsapp.ReadNewsActivity
 import com.example.newsapp.adapters.CustomAdapter
 import com.example.newsapp.fragmentClasses.HomeNavHostFragment.Companion.generalNews
+import com.example.newsapp.utils.Constants
 import com.example.newsapp.utils.Constants.NEWS_CONTENT
 import com.example.newsapp.utils.Constants.NEWS_DESCRIPTION
 import com.example.newsapp.utils.Constants.NEWS_IMAGE_URL
@@ -86,6 +87,7 @@ class GeneralFragment : Fragment() {
                         putExtra(NEWS_SOURCE, newsDataForTopHeadlines[position].source)
                         putExtra(NEWS_PUBLICATION_TIME, newsDataForTopHeadlines[position].time)
                         putExtra(NEWS_CONTENT, newsDataForTopHeadlines[position].content)
+                        putExtra(Constants.NEWS_AUTHOR, newsDataForTopHeadlines[position].author)
                     }
 
                     startActivity(intent)
@@ -107,6 +109,7 @@ class GeneralFragment : Fragment() {
                     putExtra(NEWS_SOURCE, newsDataForDown[position].source)
                     putExtra(NEWS_PUBLICATION_TIME, newsDataForDown[position].time)
                     putExtra(NEWS_CONTENT, newsDataForDown[position].content)
+                    putExtra(Constants.NEWS_AUTHOR, newsDataForDown[position].author)
                 }
 
                 startActivity(intent)

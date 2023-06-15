@@ -6,17 +6,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.newsapp.architecture.NewsViewModel
+import com.example.newsapp.databinding.ActivityReadNewsBinding
+import com.example.newsapp.utils.Constants.NEWS_AUTHOR
 import com.example.newsapp.utils.Constants.NEWS_CONTENT
 import com.example.newsapp.utils.Constants.NEWS_DESCRIPTION
 import com.example.newsapp.utils.Constants.NEWS_IMAGE_URL
@@ -24,25 +24,29 @@ import com.example.newsapp.utils.Constants.NEWS_PUBLICATION_TIME
 import com.example.newsapp.utils.Constants.NEWS_SOURCE
 import com.example.newsapp.utils.Constants.NEWS_TITLE
 import com.example.newsapp.utils.Constants.NEWS_URL
+import com.squareup.picasso.Picasso
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 
 
 class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
-    private lateinit var newsWebView: WebView
+//    private lateinit var newsWebView: WebView
     private lateinit var viewModel: NewsViewModel
     private lateinit var newsData: ArrayList<NewsModel>
     private lateinit var tts: TextToSpeech
+    private lateinit var binding: ActivityReadNewsBinding
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_read_news)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_read_news)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        newsWebView = findViewById(R.id.news_webview)
+//        newsWebView = findViewById(R.id.news_webview)
         viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
 
         //loading data into list
@@ -57,27 +61,57 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 intent.getStringExtra(NEWS_DESCRIPTION),
                 newsUrl,
                 intent.getStringExtra(NEWS_SOURCE),
+                intent.getStringExtra(NEWS_AUTHOR),
                 intent.getStringExtra(NEWS_PUBLICATION_TIME),
                 newsContent
             )
         )
 
+        binding.title.text = newsData[0].headLine
+        binding.tvContent.text = newsData[0].content
+        binding.tvDescription.text = newsData[0].description
+        binding.author.text = newsData[0].author
+        binding.date.text = newsData[0].time
+
+//        val date = newsData[0].time?.let { newsData[0].time?.substring(0, it.indexOf('T', 0)) }
+//        binding.date.text = date
+
+        val input = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:SS'Z'")
+        val output = SimpleDateFormat("dd/MM/yyyy")
+
+        var d: Date? = null
+        try {
+            d = newsData[0].time?.let { input.parse(it) }
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        val formatted = d?.let { output.format(it) }
+        Log.i("DATE", "" + formatted)
+        binding.date.text = formatted.toString()
+
+        Picasso.get()
+            .load(newsData[0].image)
+            .fit()
+            .centerCrop()
+            .error(R.drawable.samplenews)
+            .into(binding.imgView)
+
         // Webview
-        newsWebView.apply {
-            settings.apply {
-                domStorageEnabled = true
-                loadsImagesAutomatically = true
-                mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-                javaScriptEnabled = true
-            }
-            webViewClient = WebViewClient()
-            webChromeClient = WebChromeClient()
-        }
+//        newsWebView.apply {
+//            settings.apply {
+//                domStorageEnabled = true
+//                loadsImagesAutomatically = true
+//                mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+//                javaScriptEnabled = true
+//            }
+//            webViewClient = WebViewClient()
+//            webChromeClient = WebChromeClient()
+//        }
 
 
-        if (newsUrl != null) {
-            newsWebView.loadUrl(newsUrl)
-        }
+//        if (newsUrl != null) {
+//            newsWebView.loadUrl(newsUrl)
+//        }
 
         //text to speech
         tts = TextToSpeech(this, this)

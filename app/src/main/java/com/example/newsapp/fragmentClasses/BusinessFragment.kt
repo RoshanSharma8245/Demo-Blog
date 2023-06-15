@@ -14,6 +14,7 @@ import com.example.newsapp.R
 import com.example.newsapp.ReadNewsActivity
 import com.example.newsapp.adapters.CustomAdapter
 import com.example.newsapp.fragmentClasses.HomeNavHostFragment.Companion.businessNews
+import com.example.newsapp.utils.Constants.NEWS_AUTHOR
 import com.example.newsapp.utils.Constants.NEWS_CONTENT
 import com.example.newsapp.utils.Constants.NEWS_DESCRIPTION
 import com.example.newsapp.utils.Constants.NEWS_IMAGE_URL
@@ -48,6 +49,7 @@ class BusinessFragment : Fragment() {
                     putExtra(NEWS_SOURCE, newsData[position].source)
                     putExtra(NEWS_PUBLICATION_TIME, newsData[position].time)
                     putExtra(NEWS_CONTENT, newsData[position].content)
+                    putExtra(NEWS_AUTHOR, newsData[position].author)
                 }
 
                 startActivity(intent)
