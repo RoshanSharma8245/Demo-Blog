@@ -1,60 +1,109 @@
 package com.example.newsapp.fragmentClasses
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.get
+import androidx.databinding.DataBindingUtil
+import com.conscent.framework.core.Conscent
+import com.conscent.framework.core.ConscentWrapper
+import com.conscent.models.UserDetails
 import com.example.newsapp.R
+import com.example.newsapp.databinding.FragmentAccountTabBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AccountTabFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AccountTabFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    val TAG = AccountTabFragment::class.java.simpleName
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentAccountTabBinding
+    var userDetails:UserDetails? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account_tab, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_account_tab,
+            container,
+            false
+        )
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AccountTabFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AccountTabFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (ConscentWrapper.INSTANCE?.isLoggedIn() == true) {
+            binding.accountMenuNavView.menu[0].isVisible = false
+        }
+
+        binding.accountMenuNavView.setNavigationItemSelectedListener {
+            when (it.groupId) {
+                R.id.logout ->{
+                    logoutUser()
                 }
+                R.id.login ->{
+                    CoroutineScope(Dispatchers.IO).launch {
+                        Conscent.INSTANCE?.onBuyNowClick()
+                    }
+                }
+
             }
+            true
+        }
+
+        showUserDetails()
+
+
     }
+
+    private fun logoutUser() {
+        CoroutineScope(Job()).launch {
+            val logoutResponse = ConscentWrapper.INSTANCE?.logoutUser()
+            Log.i(TAG, "logoutUser: $logoutResponse")
+            withContext(Dispatchers.Main) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Logout")
+                    .setMessage(logoutResponse?.message)
+                    .setCancelable(true)
+                    .setPositiveButton("Ok") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
+        }
+    }
+
+    private fun showUserDetails():UserDetails? {
+        CoroutineScope(Job()).launch {
+            userDetails = ConscentWrapper.INSTANCE?.getUserDetails()
+            withContext(Dispatchers.Main){
+                binding.name.text = userDetails?.phoneNumber
+            }
+
+            Log.i(TAG, "showUserDetails: $userDetails")
+//            withContext(Dispatchers.Main) {
+//                AlertDialog.Builder(requireContext())
+//                    .setTitle("User Details")
+//                    .setMessage("$userDetails")
+//                    .setCancelable(true)
+//                    .setPositiveButton("Ok") { dialog, _ ->
+//                        dialog.dismiss()
+//                    }
+//                    .show()
+//            }
+        }
+        return userDetails
+    }
+
 }

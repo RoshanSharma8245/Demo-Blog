@@ -89,6 +89,14 @@
 
     </item>
 
+    <item
+        android:id="@+id/subscription"
+        android:icon="@drawable/ic_premium"
+        app:showAsAction="always"
+        android:title="Subscription">
+
+    </item>
+
 
 
 

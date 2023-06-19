@@ -33,6 +33,9 @@ import com.example.newsapp.utils.Constants.NEWS_SOURCE
 import com.example.newsapp.utils.Constants.NEWS_TITLE
 import com.example.newsapp.utils.Constants.NEWS_URL
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -154,8 +157,6 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
             )
             RegualarPaywall.initRegularPaywall()
 
-            showSubscriptions = intent.getBooleanExtra("SHOW_SUBSCRIPTIONS", false)
-
             onNewIntent(null)
         }
 
@@ -163,7 +164,9 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         Log.d("Touch", "touch_event_has_occured")
-        conscent.onTouch()
+        if (this::conscent.isInitialized) {
+            conscent.onTouch()
+        }
         return super.dispatchTouchEvent(event)
     }
 
@@ -284,6 +287,12 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
                 tts.stop()
                 tts.voice = addedVoices.elementAt(1)
                 playNews()
+            }
+            R.id.subscription ->{
+                CoroutineScope(Dispatchers.IO).launch {
+                    conscent.onBuyNowClick()
+                }
+
             }
 
             else -> return super.onOptionsItemSelected(item)

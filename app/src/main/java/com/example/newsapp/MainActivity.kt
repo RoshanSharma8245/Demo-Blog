@@ -6,10 +6,12 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
@@ -17,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.conscent.framework.core.ConscentWrapper
 import com.example.newsapp.adapters.FragmentAdapter
 import com.example.newsapp.architecture.NewsViewModel
 import com.example.newsapp.fragmentClasses.HomeNavHostFragment.Companion.apiRequestError
@@ -35,6 +38,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -80,8 +88,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        intent = Intent(applicationContext, SavedNewsActivity::class.java)
-        startActivity(intent)
+        if (item.itemId == R.id.savednews_menu) {
+            intent = Intent(applicationContext, SavedNewsActivity::class.java)
+            startActivity(intent)
+        }
+        if (item.itemId == R.id.subscription) {
+            CoroutineScope(Job()).launch {
+
+            }
+        }
+
         return super.onOptionsItemSelected(item)
     }
 
