@@ -1,6 +1,8 @@
 package com.example.newsapp
 
-import ai.conscent.regularpaywalls.RegualarPaywall
+
+import ai.conscent.registrationpaywall.RegistrationPaywall
+import ai.conscent.regularpaywalls.RegularPaywall
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
@@ -21,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.conscent.framework.core.Conscent
 import com.conscent.framework.core.ConscentWrapper
 import com.conscent.framework.core.OnConscentListener
+import com.example.bluepine.module.BluePine
 import com.example.newsapp.architecture.NewsViewModel
 import com.example.newsapp.databinding.ActivityReadNewsBinding
 import com.example.newsapp.utils.Constants.CONTENT_ID
@@ -93,7 +96,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
         val newsUrl = intent.getStringExtra(NEWS_URL)
         val contentId:String? = intent.getStringExtra(CONTENT_ID)
 
-        ConscentWrapper.changeClientId("6336e56f047afa7cb875739e")
+//        ConscentWrapper.changeClientId("5f92a62013332e0f667794dc")
 
         val newsContent =
             intent.getStringExtra(NEWS_CONTENT)
@@ -155,7 +158,9 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
                 contentId,
                 this
             )
-            RegualarPaywall.initRegularPaywall()
+            RegistrationPaywall.initRegistrationPaywall()
+//            RegularPaywall.initRegularPaywall()
+
 
             onNewIntent(null)
         }
@@ -290,7 +295,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
             }
             R.id.subscription ->{
                 CoroutineScope(Dispatchers.IO).launch {
-                    conscent.onBuyNowClick()
+                    conscent.onSoftSubscribeClick()
                 }
 
             }

@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import com.conscent.framework.core.Conscent
 import com.conscent.framework.core.ConscentWrapper
 import com.conscent.models.UserDetails
+import com.example.bluepine.module.BluePine
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentAccountTabBinding
 import kotlinx.coroutines.CoroutineScope
@@ -37,6 +38,7 @@ class AccountTabFragment : Fragment() {
             container,
             false
         )
+
         return binding.root
     }
 
@@ -44,11 +46,14 @@ class AccountTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (ConscentWrapper.INSTANCE?.isLoggedIn() == true) {
-            binding.accountMenuNavView.menu[0].isVisible = false
+            binding.accountMenuNavView.menu[1].isVisible = false
         }
 
         binding.accountMenuNavView.setNavigationItemSelectedListener {
             when (it.groupId) {
+                R.id.loyalty ->{
+                    BluePine.stateBluePine(requireContext())
+                }
                 R.id.logout ->{
                     logoutUser()
                 }
