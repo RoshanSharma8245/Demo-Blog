@@ -1,18 +1,20 @@
 package com.example.newsapp.fragmentClasses
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
-import com.conscent.framework.core.Conscent
+import androidx.fragment.app.Fragment
 import com.conscent.framework.core.ConscentWrapper
 import com.conscent.models.UserDetails
 import com.example.bluepine.module.BluePine
+import com.example.newsapp.LoginActivity
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentAccountTabBinding
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
 
 class AccountTabFragment : Fragment() {
     val TAG = AccountTabFragment::class.java.simpleName
@@ -45,9 +48,16 @@ class AccountTabFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (ConscentWrapper.INSTANCE?.isLoggedIn() == true) {
-            binding.accountMenuNavView.menu[1].isVisible = false
-        }
+
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+
+
 
         binding.accountMenuNavView.setNavigationItemSelectedListener {
             when (it.groupId) {
@@ -58,17 +68,21 @@ class AccountTabFragment : Fragment() {
                     logoutUser()
                 }
                 R.id.login ->{
-                    CoroutineScope(Dispatchers.IO).launch {
-                        Conscent.INSTANCE?.onBuyNowClick()
-                    }
+                    val intent = Intent(requireContext(),LoginActivity::class.java)
+                    startActivity(intent)
                 }
 
             }
             true
         }
 
-        showUserDetails()
+        if (ConscentWrapper.INSTANCE?.isLoggedIn() == true) {
+            binding.accountMenuNavView.menu[1].isVisible = false
+        }else{
+            binding.accountMenuNavView.menu[2].isVisible = false
+        }
 
+        showUserDetails()
 
     }
 
@@ -82,6 +96,11 @@ class AccountTabFragment : Fragment() {
                     .setMessage(logoutResponse?.message)
                     .setCancelable(true)
                     .setPositiveButton("Ok") { dialog, _ ->
+//                        val ft = requireFragmentManager().beginTransaction()
+//                        if (Build.VERSION.SDK_INT >= 26) {
+//                            ft.setReorderingAllowed(false)
+//                        }
+//                        ft.detach(this@AccountTabFragment).attach(this@AccountTabFragment).commit()
                         dialog.dismiss()
                     }
                     .show()

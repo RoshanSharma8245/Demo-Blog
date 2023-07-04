@@ -12,7 +12,7 @@ class TestingApplication : Application() {
 
         ConscentWrapper.configure(
             this,
-            "5f92a62013332e0f667794dc",
+            "6336e56f047afa7cb875739e",
             Color.parseColor("#000000"),
             ConscentConfiguration.APP_MODE.DEBUG,
             ConscentConfiguration.MODE.STAGE,
