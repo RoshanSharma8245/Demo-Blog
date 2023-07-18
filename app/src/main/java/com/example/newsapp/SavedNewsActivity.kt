@@ -41,6 +41,7 @@ class SavedNewsActivity : AppCompatActivity() {
         val adapter = CustomAdapter(newsData)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
+        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24)
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

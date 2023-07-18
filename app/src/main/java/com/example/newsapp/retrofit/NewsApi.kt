@@ -1,7 +1,9 @@
 package com.example.newsapp.retrofit
 
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface NewsApi {
@@ -16,4 +18,10 @@ interface NewsApi {
     // for global
 //    https://newsapi.org/v2/top-headlines?category=general&language=en&apiKey=5a3e054de1834138a2fbc4a75ee69053
 
+}
+
+interface ApiService {
+
+    @POST("/api/v1/client/generate-temp-token")
+    suspend fun generateTempToken(@Body body: GenerateToken): TempAuthTokenResponse?
 }

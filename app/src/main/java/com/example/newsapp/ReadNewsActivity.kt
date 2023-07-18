@@ -1,7 +1,8 @@
 package com.example.newsapp
 
-import ai.conscent.regularpaywalls.RegualarPaywall
-import android.annotation.SuppressLint
+
+import ai.conscent.registrationpaywall.RegistrationPaywall
+import ai.conscent.regularpaywalls.RegularPaywall
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -16,7 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import com.conscent.framework.core.Conscent
 import com.conscent.framework.core.ConscentWrapper
@@ -38,7 +39,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 
 class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnConscentListener {
@@ -48,6 +50,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
     private lateinit var tts: TextToSpeech
     private lateinit var binding: ActivityReadNewsBinding
     lateinit var conscentWrapper: ConscentWrapper
+    private lateinit var menu: Menu
 
     lateinit var conscent: Conscent
     private var showSubscriptions: Boolean = false
@@ -81,7 +84,12 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
         setContentView(binding.root)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
+        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24)
         setSupportActionBar(toolbar)
+
+        toolbar.setNavigationOnClickListener {
+            onBackPressed() // Implemented by activity
+        }
 
         parent = findViewById(R.id.parent)
         frame = findViewById(R.id.frame)
@@ -93,7 +101,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
         val newsUrl = intent.getStringExtra(NEWS_URL)
         val contentId:String? = intent.getStringExtra(CONTENT_ID)
 
-        ConscentWrapper.changeClientId("6336e56f047afa7cb875739e")
+//        ConscentWrapper.changeClientId("5f92a62013332e0f667794dc")
 
         val newsContent =
             intent.getStringExtra(NEWS_CONTENT)
@@ -152,10 +160,13 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
                 this,
                 parent,
                 frame,
-                contentId,
+                "2",
                 this
             )
-            RegualarPaywall.initRegularPaywall()
+            RegistrationPaywall.initRegistrationPaywall()
+            RegularPaywall.initRegularPaywall()
+            conscent.popUpContainer = binding.popUp
+
 
             onNewIntent(null)
         }
@@ -222,6 +233,9 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_item_readnewsactivity, menu)
+        this.menu = menu
+        menu[1].subMenu?.get(0)?.isVisible = false
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -248,7 +262,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
                 startActivity(intent)
             }
 
-            // Menu items for vocal news
+//             Menu items for vocal news
             R.id.play_news -> {
                 playNews()
             }
@@ -290,7 +304,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
             }
             R.id.subscription ->{
                 CoroutineScope(Dispatchers.IO).launch {
-                    conscent.onBuyNowClick()
+                    conscent.onSoftSubscribeClick()
                 }
 
             }
@@ -316,7 +330,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
     }
 
     override fun onError(clientId: String, contentId: String, errorMsg: String) {
-        Log.d(TAG, "onError: ")
+        Log.e(TAG, "onError: $errorMsg")
     }
 
     override fun onSignIn(clientId: String, contentId: String) {
@@ -329,5 +343,6 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
 
     override fun onSuccess(clientId: String, contentId: String) {
         Log.d(TAG, "onSuccess: ")
+        menu[1].subMenu?.get(0)?.isVisible = true
     }
 }

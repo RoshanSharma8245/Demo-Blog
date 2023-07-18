@@ -1,43 +1,18 @@
 package com.example.newsapp
 
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import androidx.viewpager2.widget.ViewPager2
-import com.conscent.framework.core.ConscentWrapper
-import com.example.newsapp.adapters.FragmentAdapter
 import com.example.newsapp.architecture.NewsViewModel
-import com.example.newsapp.fragmentClasses.HomeNavHostFragment.Companion.apiRequestError
-import com.example.newsapp.utils.Constants
-import com.example.newsapp.utils.Constants.BUSINESS
-import com.example.newsapp.utils.Constants.ENTERTAINMENT
-import com.example.newsapp.utils.Constants.GENERAL
-import com.example.newsapp.utils.Constants.HEALTH
-import com.example.newsapp.utils.Constants.HOME
-import com.example.newsapp.utils.Constants.SCIENCE
-import com.example.newsapp.utils.Constants.SPORTS
-import com.example.newsapp.utils.Constants.TECHNOLOGY
-import com.example.newsapp.utils.Constants.TOTAL_NEWS_TAB
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -75,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
     }
 
 
@@ -107,6 +83,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         finishAffinity()
+    }
+
+    fun restartFragment(fragmentId: Int) {
+        val currentFragment = this.supportFragmentManager.findFragmentById(fragmentId)!!
+
+        this.supportFragmentManager.beginTransaction()
+            .detach(currentFragment)
+            .commit()
+        this.supportFragmentManager.beginTransaction()
+            .attach(currentFragment)
+            .commit()
     }
 }
 

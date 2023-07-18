@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/loyalty">
+        <item
+            android:icon="@drawable/baseline_login_24"
+            android:title="Loyalty" />
+    </group>
     <group android:id="@+id/login">
         <item
             android:icon="@drawable/baseline_login_24"

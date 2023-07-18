@@ -19,9 +19,9 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:title="Read News"
+                app:title="@string/app_name"
                 app:titleCentered="true"
-                app:titleTextColor="?attr/colorOnPrimary">
+                app:titleTextColor="@color/white">
 
             </com.google.android.material.appbar.MaterialToolbar>
 
@@ -163,8 +163,14 @@
                 android:id="@+id/frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:elevation="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/popUp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
