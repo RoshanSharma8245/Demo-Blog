@@ -43,7 +43,7 @@ import java.util.Date
 import java.util.Locale
 
 
-class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnConscentListener {
+class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnConscentListener {
     val TAG = ReadNewsActivity::class.java.simpleName
     private lateinit var viewModel: NewsViewModel
     private lateinit var newsData: ArrayList<NewsModel>
@@ -54,7 +54,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
 
     lateinit var conscent: Conscent
     private var showSubscriptions: Boolean = false
-    private var scollLength:Int = 0
+    private var scollLength: Int = 0
 
     private lateinit var parent: ConstraintLayout
     private lateinit var frame: FrameLayout
@@ -99,7 +99,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
         //loading data into list
         newsData = ArrayList(1)
         val newsUrl = intent.getStringExtra(NEWS_URL)
-        val contentId:String? = intent.getStringExtra(CONTENT_ID)
+        val contentId: String? = intent.getStringExtra(CONTENT_ID)
 
 //        ConscentWrapper.changeClientId("5f92a62013332e0f667794dc")
 
@@ -146,16 +146,14 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
             .into(binding.imgView)
 
 
-
-
-
         //text to speech
         tts = TextToSpeech(this, this)
 
 
+        /***  Initialize the paywall  ***/
         if (contentId != null) {
 
-            Log.d("contentId:",contentId)
+            Log.d("contentId:", contentId)
             conscent = ConscentWrapper.getConscentInstance(
                 this,
                 parent,
@@ -321,6 +319,9 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
         super.onDestroy()
     }
 
+    /** You can pass a listener which will get called after success or failure in processing.
+     *  If you pass a listener, after successful processing, the success reference will be called and for a failed event,
+     *  the failure event will be called  **/
     override fun onAdFree(clientId: String, contentId: String?) {
         Log.d(TAG, "onAdFree: ")
     }

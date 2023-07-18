@@ -10,6 +10,16 @@ class TestingApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        /***   Initialize SDK ***/
+
+        /***  Mode can be set as :
+        ConscentConfiguration.MODE.STAGE
+        ConscentConfiguration.MODE.SANDBOX
+        ConscentConfiguration.MODE.PRODUCTION ***/
+
+        /***   If APP_MODE is DEBUG, then all errors will be shown as Toast messages and Logs.
+        If APP_MODE is PROD, only logs will be available for critical errors like Network unavailability, wrong client_id, and wrong content_id. ***/
+
         ConscentWrapper.configure(
             this,
             "5fffcf4b2a2d942cb093ea18",
