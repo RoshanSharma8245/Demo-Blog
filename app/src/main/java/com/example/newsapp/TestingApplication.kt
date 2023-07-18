@@ -12,10 +12,10 @@ class TestingApplication : Application() {
 
         ConscentWrapper.configure(
             this,
-            "6336e56f047afa7cb875739e",
+            "5fffcf4b2a2d942cb093ea18",
             Color.parseColor("#000000"),
             ConscentConfiguration.APP_MODE.DEBUG,
-            ConscentConfiguration.MODE.STAGE,
+            ConscentConfiguration.MODE.SANDBOX,
         )
 
         BluePine.setPartnerIdAndUserId("98765412301", "sourav@conscent.ai")

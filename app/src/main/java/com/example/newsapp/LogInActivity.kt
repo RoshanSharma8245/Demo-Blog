@@ -1,5 +1,6 @@
 package com.example.newsapp
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +10,9 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.ui.graphics.Color
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.conscent.framework.core.ConscentWrapper
 import com.conscent.models.UserDetails
 import com.example.newsapp.databinding.ActivityLogInBinding
@@ -102,20 +105,6 @@ class LoginActivity : AppCompatActivity() {
                     )
                 }
             }
-//            withContext(Dispatchers.Main) {
-//                AlertDialog.Builder(this@LoginActivity)
-//                    .setTitle("TempToken")
-//                    .setMessage(message)
-//                    .setCancelable(true)
-//                    .setPositiveButton("Ok") { dialog, _ ->
-//                        dialog.dismiss()
-//                    }
-//                    .show()
-//            }
-
-//            withTimeout(1000L) {
-            finish()
-//            }
 
 
 
@@ -144,16 +133,17 @@ class LoginActivity : AppCompatActivity() {
         return userDetails
     }
 
-    override fun onResume() {
-        super.onResume()
-
-//        showUserDetails()
-
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.i(TAG, "RedirectionHandler.onActivityResult: ")
+        if (resultCode == RESULT_OK) {
+            Toast.makeText(applicationContext,"${data?.getStringExtra("STATUS")}",Toast.LENGTH_LONG).show()
+        }
     }
 
 

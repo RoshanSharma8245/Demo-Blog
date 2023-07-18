@@ -160,11 +160,12 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
                 this,
                 parent,
                 frame,
-                contentId,
+                "2",
                 this
             )
             RegistrationPaywall.initRegistrationPaywall()
             RegularPaywall.initRegularPaywall()
+            conscent.popUpContainer = binding.popUp
 
 
             onNewIntent(null)
@@ -329,7 +330,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
     }
 
     override fun onError(clientId: String, contentId: String, errorMsg: String) {
-        Log.d(TAG, "onError: ")
+        Log.e(TAG, "onError: $errorMsg")
     }
 
     override fun onSignIn(clientId: String, contentId: String) {
