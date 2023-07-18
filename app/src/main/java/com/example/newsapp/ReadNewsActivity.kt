@@ -160,7 +160,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener , OnCo
                 this,
                 parent,
                 frame,
-                "2",
+                contentId,
                 this
             )
             RegistrationPaywall.initRegistrationPaywall()

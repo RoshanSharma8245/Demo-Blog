@@ -43,7 +43,7 @@ class PremiumTabFragment : Fragment() {
                     putExtra(Constants.NEWS_PUBLICATION_TIME, newsData[position].time)
                     putExtra(Constants.NEWS_CONTENT, newsData[position].content)
                     putExtra(Constants.NEWS_AUTHOR, newsData[position].author)
-                    putExtra(Constants.CONTENT_ID, "Client-Story-Id-$position")
+                    putExtra(Constants.CONTENT_ID, "${position+1}")
                 }
 
                 startActivity(intent)
