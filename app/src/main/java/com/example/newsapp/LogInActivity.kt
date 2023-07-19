@@ -111,28 +111,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun showUserDetails(): UserDetails? {
-        CoroutineScope(Job()).launch {
-            userDetails = ConscentWrapper.INSTANCE?.getUserDetails()
-            withContext(Dispatchers.Main){
-                binding.etUsername?.setText( userDetails?.phoneNumber)
-            }
-
-            Log.i(TAG, "showUserDetails: $userDetails")
-//            withContext(Dispatchers.Main) {
-//                AlertDialog.Builder(requireContext())
-//                    .setTitle("User Details")
-//                    .setMessage("$userDetails")
-//                    .setCancelable(true)
-//                    .setPositiveButton("Ok") { dialog, _ ->
-//                        dialog.dismiss()
-//                    }
-//                    .show()
-//            }
-        }
-        return userDetails
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
@@ -143,6 +121,9 @@ class LoginActivity : AppCompatActivity() {
         Log.i(TAG, "RedirectionHandler.onActivityResult: ")
         if (resultCode == RESULT_OK) {
             Toast.makeText(applicationContext,"${data?.getStringExtra("STATUS")}",Toast.LENGTH_LONG).show()
+            if (data?.getStringExtra("STATUS") == "true"){
+                finish()
+            }
         }
     }
 
@@ -151,19 +132,4 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 
-}
-
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
 }

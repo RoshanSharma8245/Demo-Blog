@@ -96,11 +96,7 @@ class AccountTabFragment : Fragment() {
                     .setMessage(logoutResponse?.message)
                     .setCancelable(true)
                     .setPositiveButton("Ok") { dialog, _ ->
-//                        val ft = requireFragmentManager().beginTransaction()
-//                        if (Build.VERSION.SDK_INT >= 26) {
-//                            ft.setReorderingAllowed(false)
-//                        }
-//                        ft.detach(this@AccountTabFragment).attach(this@AccountTabFragment).commit()
+                        requireActivity().recreate()
                         dialog.dismiss()
                     }
                     .show()
