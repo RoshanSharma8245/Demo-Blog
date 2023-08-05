@@ -41,16 +41,14 @@ class LoginActivity : AppCompatActivity() {
         var isValid = false
 
 
-        binding.etUsername?.addTextChangedListener(object : TextWatcher {
+        binding.etUsername.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                Log.d("afterTextChanged","$s")
+            }
 
-            }
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                Log.d("beforeTextChanged","$s")
             }
+
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                Log.d("onTextChanged","$s")
                 isValid = s.matches(regex = phoneRegex)
                 binding.login.isEnabled = isValid
                 if(isValid){
@@ -70,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun autoLogin() {
         val email = ""
-        val phoneNumber = binding.etUsername?.text.toString()
+        val phoneNumber = binding.etUsername.text.toString()
         var tempToken: TempAuthTokenResponse? = null
         var message:String
 
