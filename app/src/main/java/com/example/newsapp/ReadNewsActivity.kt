@@ -301,7 +301,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
             }
             R.id.subscription ->{
                 CoroutineScope(Dispatchers.IO).launch {
-                    conscent.onSoftSubscribeClick()
+                    conscent.onSoftSubscribeClick("https://csc-subs-sandbox.netlify.app?clientId=5fffcf4b2a2d942cb093ea18")
                 }
 
             }
