@@ -13,7 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.conscent.framework.core.ConscentWrapper
 import com.conscent.models.UserDetails
-import com.example.bluepine.module.BluePine
+//import com.example.bluepine.module.BluePine
 import com.example.newsapp.LoginActivity
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentAccountTabBinding
@@ -62,7 +62,7 @@ class AccountTabFragment : Fragment() {
         binding.accountMenuNavView.setNavigationItemSelectedListener {
             when (it.groupId) {
                 R.id.loyalty ->{
-                    BluePine.stateBluePine(requireContext())
+//                    BluePine.stateBluePine(requireContext())
                 }
                 R.id.logout ->{
                     logoutUser()

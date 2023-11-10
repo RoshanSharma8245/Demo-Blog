@@ -4,7 +4,7 @@ import android.app.Application
 import android.graphics.Color
 import com.conscent.framework.core.ConscentConfiguration
 import com.conscent.framework.core.ConscentWrapper
-import com.example.bluepine.module.BluePine
+//import com.example.bluepine.module.BluePine
 
 class TestingApplication : Application() {
     override fun onCreate() {
@@ -22,12 +22,12 @@ class TestingApplication : Application() {
 
         ConscentWrapper.configure(
             this,
-            "5fffcf4b2a2d942cb093ea18",
+            "6336e56f047afa7cb875739e",
             Color.parseColor("#000000"),
             ConscentConfiguration.APP_MODE.DEBUG,
-            ConscentConfiguration.MODE.SANDBOX,
+            ConscentConfiguration.MODE.STAGE,
         )
 
-        BluePine.setPartnerIdAndUserId("98765412301", "sourav@conscent.ai")
+//        BluePine.setPartnerIdAndUserId("98765412301", "sourav@conscent.ai") // BluePine SDK need to update
     }
 }

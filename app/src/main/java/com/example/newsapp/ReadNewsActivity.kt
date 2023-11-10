@@ -1,6 +1,9 @@
 package com.example.newsapp
 
+import ai.conscent.meterbanner.MeterBanner
+import ai.conscent.registrationpaywall.RegistrationPaywall
 import ai.conscent.regularpaywalls.RegularPaywall
+import ai.conscent.timerpaywall.TimerPaywall
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,9 +20,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
+import com.conscent.framework.callbacklistener.OnConscentListener
 import com.conscent.framework.core.Conscent
 import com.conscent.framework.core.ConscentWrapper
-import com.conscent.framework.core.OnConscentListener
 import com.example.newsapp.architecture.NewsViewModel
 import com.example.newsapp.databinding.ActivityReadNewsBinding
 import com.example.newsapp.utils.Constants.CONTENT_ID
@@ -156,12 +159,14 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
                 this,
                 parent,
                 frame,
-                contentId,
+                "Client-Story-Id-${contentId}",
                 this
             )
-//            RegistrationPaywall.initRegistrationPaywall() /***  Registration Paywall in beta  ***/
-//            TimerPaywall.initTimerPaywall() /***  Timer Paywall in beta  ***/
+            MeterBanner.initMeterBanner()
+            RegistrationPaywall.initRegistrationPaywall() /***  Registration Paywall in beta  ***/
+            TimerPaywall.initTimerPaywall() /***  Timer Paywall in beta  ***/
             RegularPaywall.initRegularPaywall()
+
             conscent.popUpContainer = binding.popUp
 
 

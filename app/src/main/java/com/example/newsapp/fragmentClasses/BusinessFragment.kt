@@ -15,10 +15,9 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.conscent.framework.callbacklistener.OnConscentListener
 import com.conscent.framework.core.Conscent
 import com.conscent.framework.core.ConscentWrapper
-import com.conscent.framework.core.OnConscentListener
-import com.example.newsapp.MainActivity
 import com.example.newsapp.NewsModel
 import com.example.newsapp.R
 import com.example.newsapp.ReadNewsActivity
