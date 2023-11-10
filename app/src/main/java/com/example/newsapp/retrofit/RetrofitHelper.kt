@@ -27,7 +27,7 @@ object RetrofitHelper {
 }
 object RetrofitBuilder {
 
-    private val httpClient = OkHttpClient.Builder().addInterceptor(AuthenticationInterceptor("X8GG9J7-TF7420A-HAMAGH4-2S4KPHK","Q7Z0X668AW4XP3NR2W18TNGNDXGZX8GG9J7TF7420AHAMAGH42S4KPHK"))
+    private val httpClient = OkHttpClient.Builder().addInterceptor(AuthenticationInterceptor("J1EFAQR-H0N4921-QCXKVNH-6W9ZYY9","CFR472795Q42TTQJFV84M37A5G4SJ1EFAQRH0N4921QCXKVNH6W9ZYY9"))
     private val logging = HttpLoggingInterceptor()
 
     private fun getRetrofit(): Retrofit {
