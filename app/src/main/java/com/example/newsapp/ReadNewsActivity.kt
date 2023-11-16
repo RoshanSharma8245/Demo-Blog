@@ -236,6 +236,10 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_item_readnewsactivity, menu)
         this.menu = menu
+        val contentId: String? = intent.getStringExtra(CONTENT_ID)
+        if(contentId == null){
+            menu[0].isVisible = false
+        }
         menu[1].subMenu?.get(0)?.isVisible = false
 
         return super.onCreateOptionsMenu(menu)
