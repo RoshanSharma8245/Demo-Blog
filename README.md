@@ -38,7 +38,8 @@ Kotlin-based Android news app helps users stay up-to-date on the latest headline
  * Room database library
  * Android Studio
  * Third party libraries like [retrofit](https://square.github.io/retrofit/), [picasso](https://square.github.io/picasso/), [shimmer](https://github.com/facebook/shimmer-android).
- * Conscent.ai [SDK](https://github.com/tsbmediaventure/ConsCent-docs/tree/master/docs/plugins/android). 
+ * Conscent.ai [DOC](https://docs.conscent.ai/mobile-sdk/android) [SDK](https://github.com/tsbmediaventure/ConsCent-docs/tree/master/docs/plugins/android).
+ * 
 
  
 
