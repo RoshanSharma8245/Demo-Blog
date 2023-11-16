@@ -17,11 +17,21 @@ Kotlin-based Android news app helps users stay up-to-date on the latest headline
  
  <table align="center">
   <tr>
+    <th>News home</th>
+    <th>All Premium News</th>
+    <th>Premium News</th>
+  </tr>
+  <tr>
     <td><img src="screenshots/home_screen.png" alt="News home" style="width:200px;height:400px;"></td>
     <td><img src="screenshots/premium_contents.png" alt="All Premium News" style="width:200px;height:400px;"></td>
     <td><img src="screenshots/paywall.png" alt="Premium News" style="width:200px;height:400px;"></td>
   </tr>
-  
+
+  <tr>
+    <th>Razorpay Payment Screen</th>
+    <th>Subscription Screen</th>
+    <th>Login Screen</th>
+  </tr>
   <tr>
     <td><img src="screenshots/razorpay_payment.png" alt="Razorpay Payment Screen" style="width:200px;height:400px;"></td>
     <td><img src="screenshots/subscription_landing_page.png" alt="Subscription Screen" style="width:200px;height:400px;"></td>
