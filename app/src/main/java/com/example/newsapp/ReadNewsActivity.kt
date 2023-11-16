@@ -229,7 +229,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
         300,
         300,
         false,
-        setOf("NA", "f00", "202007071", "female", null)
+        setOf("NA", "f00", "202007071", "female", null) //8765456776
     )
     private val addedVoices: Set<Voice> = setOf(voice1, voice2)
 
@@ -310,7 +310,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
             }
             R.id.subscription ->{
                 CoroutineScope(Dispatchers.IO).launch {
-                    conscent.onSoftSubscribeClick("https://csc-subs-stage.netlify.app?clientId=6017f0b93d65b109809c6355")
+                    conscent.onSoftSubscribeClick("https://csc-subs-stage.netlify.app?clientId=6336e56f047afa7cb875739e")
                 }
 
             }
