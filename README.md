@@ -48,22 +48,3 @@ Note: To run the app you have to add NewsAPI.org key. This API has limited acces
 
 ### Application link : <a href="https://drive.google.com/file/d/1ykFeH1AhmkqkU9b_nS29xXXnER-pkCfK/view?usp=drive_link">**Click here to download apk**</a>
 
-### Contributing
-
-   - Contributions are always welcome!
-
-   - See [CONTRIBUTING.md](https://github.com/Raj-m01/News-App/blob/master/CONTRIBUTING.md) for ways to get started.
-
-  
-### For hackoberfest:
-
-- **Before creating any Pull Request, please register yourself at [Hacktoberfest's Official Website](https://hacktoberfest.digitalocean.com/)**
-- **If a maintainer reports behavior that’s not in line with the project’s code of conduct, then you will be ineligible to participate.**
-- **If a maintainer reports your pull request as spam, it will not be counted towards your participation in Hacktoberfest.**
-
-
-### 📝 License 
-
-Copyright (c) 2022 Raj Manjrekar
-
-This project is [MIT](https://github.com/Raj-m01/News-App/blob/master/License) licensed.
