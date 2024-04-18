@@ -154,6 +154,10 @@ class BusinessFragment : Fragment(), OnConscentListener {
         Log.e(TAG, "onError: $errorMsg")
     }
 
+    override fun onGoogleLoginClick() {
+        TODO("Not yet implemented")
+    }
+
     override fun onSignIn(clientId: String, contentId: String) {
         Log.d(TAG, "signIn: ")
     }
@@ -166,4 +170,8 @@ class BusinessFragment : Fragment(), OnConscentListener {
         Log.d(TAG, "onSuccess: ")
     }
 
+    override fun onDestroyView() {
+        conscent.onDestroy()
+        super.onDestroyView()
+    }
 }

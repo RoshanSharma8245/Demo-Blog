@@ -3,7 +3,6 @@ package com.example.newsapp
 import ai.conscent.meterbanner.MeterBanner
 import ai.conscent.registrationpaywall.RegistrationPaywall
 import ai.conscent.regularpaywalls.RegularPaywall
-import ai.conscent.timerpaywall.TimerPaywall
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -164,7 +163,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
             )
             MeterBanner.initMeterBanner()
             RegistrationPaywall.initRegistrationPaywall() /***  Registration Paywall in beta  ***/
-            TimerPaywall.initTimerPaywall() /***  Timer Paywall in beta  ***/
+//            TimerPaywall.initTimerPaywall() /***  Timer Paywall in beta  ***/
             RegularPaywall.initRegularPaywall()
 
             conscent.popUpContainer = binding.popUp
@@ -340,6 +339,10 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
 
     override fun onError(clientId: String, contentId: String, errorMsg: String) {
         Log.e(TAG, "onError: $errorMsg")
+    }
+
+    override fun onGoogleLoginClick() {
+        TODO("Not yet implemented")
     }
 
     override fun onSignIn(clientId: String, contentId: String) {
