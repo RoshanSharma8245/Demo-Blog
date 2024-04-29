@@ -24,7 +24,7 @@ class TestingApplication : Application() {
             this,
             "6336e56f047afa7cb875739e",
             Color.parseColor("#000000"),
-            ConscentConfiguration.APP_MODE.PROD,
+            ConscentConfiguration.APP_MODE.DEBUG,
             ConscentConfiguration.MODE.STAGE,
         )
 

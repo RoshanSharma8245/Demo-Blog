@@ -1,5 +1,6 @@
 package com.example.newsapp.fragmentClasses
 
+import ai.conscent.registrationpaywall.RegistrationPaywall
 import ai.conscent.regularpaywalls.RegularPaywall
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +12,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +36,7 @@ class BusinessFragment : Fragment(), OnConscentListener {
 
     private lateinit var tv_status: TextView
     private lateinit var paywall_view: FrameLayout
+    private lateinit var popup_view: FrameLayout
     private lateinit var parent_view: ConstraintLayout
     lateinit var conscent: Conscent
 
@@ -105,6 +106,7 @@ class BusinessFragment : Fragment(), OnConscentListener {
 
         parent_view = view.findViewById<ConstraintLayout>(R.id.parent)
         paywall_view = view.findViewById<FrameLayout>(R.id.frame)
+        popup_view = view.findViewById<FrameLayout>(R.id.frame)
 //        tv_status = view.findViewById<TextView>(R.id.tv_status)
 
 
@@ -115,9 +117,12 @@ class BusinessFragment : Fragment(), OnConscentListener {
             requireActivity(),
             parent_view,
             paywall_view,
-            "1",
+            popup_view,
+            "Client-Story-Id-1",
             this
         )
+//        NewPaywall.initNewPaywall()
+        RegistrationPaywall.initRegistrationPaywall()
         RegularPaywall.initRegularPaywall()
 
 
@@ -155,7 +160,7 @@ class BusinessFragment : Fragment(), OnConscentListener {
     }
 
     override fun onGoogleLoginClick() {
-        TODO("Not yet implemented")
+
     }
 
     override fun onSignIn(clientId: String, contentId: String) {
@@ -173,5 +178,15 @@ class BusinessFragment : Fragment(), OnConscentListener {
     override fun onDestroyView() {
         conscent.onDestroy()
         super.onDestroyView()
+    }
+
+    override fun eventParams(
+        paywallId: String,
+        contentId: String,
+        paywallType: String,
+        clientId: String,
+        anonId: String
+    ) {
+        Log.d(TAG, "eventParams: $paywallId, $contentId, $paywallType, $clientId, $anonId")
     }
 }

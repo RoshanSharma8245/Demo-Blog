@@ -156,8 +156,9 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
             Log.d("contentId:", contentId)
             conscent = ConscentWrapper.getConscentInstance(
                 this,
-                parent,
-                frame,
+                binding.parent,
+                binding.frame,
+                binding.popUp,
                 "Client-Story-Id-${contentId}",
                 this
             )
@@ -165,8 +166,8 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
             RegistrationPaywall.initRegistrationPaywall() /***  Registration Paywall in beta  ***/
 //            TimerPaywall.initTimerPaywall() /***  Timer Paywall in beta  ***/
             RegularPaywall.initRegularPaywall()
+//            NewPaywall.initNewPaywall()
 
-            conscent.popUpContainer = binding.popUp
 
 
             onNewIntent(null)
@@ -324,6 +325,16 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
         tts.stop()
         tts.shutdown()
         super.onDestroy()
+    }
+
+    override fun eventParams(
+        paywallId: String,
+        contentId: String,
+        paywallType: String,
+        clientId: String,
+        anonId: String
+    ) {
+        Log.d(TAG, "eventParams: $paywallId, $contentId, $paywallType, $clientId, $anonId")
     }
 
     /** You can pass a listener which will get called after success or failure in processing.
