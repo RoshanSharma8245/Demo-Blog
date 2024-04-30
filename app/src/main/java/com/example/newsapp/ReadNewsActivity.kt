@@ -5,6 +5,7 @@ import ai.conscent.registrationpaywall.RegistrationPaywall
 import ai.conscent.regularpaywalls.RegularPaywall
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
@@ -14,11 +15,13 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.conscent.framework.callbacklistener.OnConscentListener
 import com.conscent.framework.core.Conscent
 import com.conscent.framework.core.ConscentWrapper
@@ -33,14 +36,28 @@ import com.example.newsapp.utils.Constants.NEWS_PUBLICATION_TIME
 import com.example.newsapp.utils.Constants.NEWS_SOURCE
 import com.example.newsapp.utils.Constants.NEWS_TITLE
 import com.example.newsapp.utils.Constants.NEWS_URL
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.example.newsapp.retrofit.GenerateToken
+import com.example.newsapp.retrofit.RetrofitBuilder
+import com.example.newsapp.retrofit.TempAuthTokenResponse
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import java.util.Base64
 
 
 class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnConscentListener {
@@ -58,6 +75,10 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
 
     private lateinit var parent: ConstraintLayout
     private lateinit var frame: FrameLayout
+    // [START declare_auth]
+    private lateinit var auth: FirebaseAuth
+    // [END declare_auth]
+    private lateinit var googleSignInClient: GoogleSignInClient
 
 
     override fun onNewIntent(intent: Intent?) {
@@ -173,6 +194,21 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
             onNewIntent(null)
         }
 
+        // [START config_signin]
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        // [END config_signin]
+
+        // [START initialize_auth]
+        // Initialize Firebase Auth
+        auth = Firebase.auth
+        // [END initialize_auth]
+
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
@@ -186,6 +222,20 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                val account = task.getResult(ApiException::class.java)!!
+                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e)
+            }
+        }
+
         Log.i("Result", "RedirectionHandler.onActivityResult: ")
         if (resultCode == RESULT_OK) {
             if (data?.getStringExtra("TYPE") == "PLANS") {
@@ -195,6 +245,15 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
                 )
             } else
                 conscent.handledIntent()
+        }
+        if (resultCode == RESULT_OK) {
+
+            if (data?.getStringExtra("STATUS") == "true"){
+                Log.i(TAG, "RedirectionHandler.onActivityResult: true ")
+                Toast.makeText(applicationContext,"${data?.getStringExtra("STATUS")}", Toast.LENGTH_LONG).show()
+            }else{
+                Log.i(TAG, "RedirectionHandler.onActivityResult: false ")
+            }
         }
     }
 
@@ -353,7 +412,8 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
     }
 
     override fun onGoogleLoginClick() {
-        TODO("Not yet implemented")
+        Log.d(TAG, "onGoogleLoginClick: ")
+        signIn()
     }
 
     override fun onSignIn(clientId: String, contentId: String) {
@@ -367,5 +427,82 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
     override fun onSuccess(clientId: String, contentId: String) {
         Log.d(TAG, "onSuccess: ")
         menu[1].subMenu?.get(0)?.isVisible = true
+    }
+    companion object {
+        private const val RC_SIGN_IN = 9001
+    }
+
+    // [START signin]
+    private fun signIn() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    // [START auth_with_google]
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success")
+                    val user = auth.currentUser
+
+                    updateUI(user)
+                    autoLogin(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    updateUI(null)
+                }
+            }
+    }
+    // [END auth_with_google]
+
+    private fun updateUI(user: FirebaseUser?) {
+        Log.d("firebaseAuthWithGoogle", "called")
+
+        Log.d("firebaseAuthWithGoogle", "${user?.email}")
+        Log.d("firebaseAuthWithGoogle", "${user?.displayName}")
+        Log.d("firebaseAuthWithGoogle", "${user?.photoUrl}")
+        Log.d("firebaseAuthWithGoogle", "${user?.isAnonymous}")
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun autoLogin(user: FirebaseUser?) {
+        val email = user?.email
+        val phoneNumber = ""
+        var tempToken: TempAuthTokenResponse? = null
+        var message:String
+
+
+        lifecycleScope.launch {
+            try {
+                tempToken = withContext(Dispatchers.IO) {
+                    RetrofitBuilder.apiService.generateTempToken(GenerateToken(email!!, phoneNumber))
+                }
+            }catch (e:Exception){
+                message = e.localizedMessage?.toString() ?: "ERROR"
+            }
+
+            Log.i(TAG, "TempToken: $tempToken")
+
+            if (tempToken?.error != null){
+                tempToken?.message.let {
+                    message = it ?: tempToken?.error!!
+                }
+            }else{
+                message = tempToken?.tempAuthToken.toString()
+                val encodedEmail =  Base64.getEncoder().encodeToString(email!!.toByteArray())
+                tempToken?.tempAuthToken?.let {
+                    ConscentWrapper.INSTANCE?.autoLogin(
+                        email = encodedEmail,
+                        phoneNumber = phoneNumber,
+                        clientActivity = this@ReadNewsActivity,
+                        tempToken = it
+                    )
+                }
+            }
+        }
     }
 }
