@@ -1,11 +1,12 @@
 package com.example.newsapp.architecture
 
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.newsapp.NewsModel
-
+@Keep
 class NewsViewModel : ViewModel() {
 
     private var newsLiveData: MutableLiveData<List<NewsModel>>? = null

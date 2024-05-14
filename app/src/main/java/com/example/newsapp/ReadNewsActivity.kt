@@ -1,8 +1,6 @@
 package com.example.newsapp
 
-import ai.conscent.meterbanner.MeterBanner
 import ai.conscent.registrationpaywall.RegistrationPaywall
-import ai.conscent.regularpaywalls.RegularPaywall
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -27,6 +25,9 @@ import com.conscent.framework.core.Conscent
 import com.conscent.framework.core.ConscentWrapper
 import com.example.newsapp.architecture.NewsViewModel
 import com.example.newsapp.databinding.ActivityReadNewsBinding
+import com.example.newsapp.retrofit.GenerateToken
+import com.example.newsapp.retrofit.RetrofitBuilder
+import com.example.newsapp.retrofit.TempAuthTokenResponse
 import com.example.newsapp.utils.Constants.CONTENT_ID
 import com.example.newsapp.utils.Constants.NEWS_AUTHOR
 import com.example.newsapp.utils.Constants.NEWS_CONTENT
@@ -36,10 +37,15 @@ import com.example.newsapp.utils.Constants.NEWS_PUBLICATION_TIME
 import com.example.newsapp.utils.Constants.NEWS_SOURCE
 import com.example.newsapp.utils.Constants.NEWS_TITLE
 import com.example.newsapp.utils.Constants.NEWS_URL
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,17 +53,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Base64
 import java.util.Date
 import java.util.Locale
-import com.example.newsapp.retrofit.GenerateToken
-import com.example.newsapp.retrofit.RetrofitBuilder
-import com.example.newsapp.retrofit.TempAuthTokenResponse
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import java.util.Base64
 
 
 class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnConscentListener {
@@ -183,10 +181,10 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
                 "Client-Story-Id-${contentId}",
                 this
             )
-            MeterBanner.initMeterBanner()
+//            MeterBanner.initMeterBanner()
             RegistrationPaywall.initRegistrationPaywall() /***  Registration Paywall in beta  ***/
 //            TimerPaywall.initTimerPaywall() /***  Timer Paywall in beta  ***/
-            RegularPaywall.initRegularPaywall()
+//            RegularPaywall.initRegularPaywall()
 //            NewPaywall.initNewPaywall()
 
 
@@ -407,6 +405,10 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
         Log.d(TAG, "onBuyPass: ")
     }
 
+    override fun onCustomLinkSlot(link: String?, contentId: String) {
+
+    }
+
     override fun onError(clientId: String, contentId: String, errorMsg: String) {
         Log.e(TAG, "onError: $errorMsg")
     }
@@ -414,6 +416,15 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
     override fun onGoogleLoginClick() {
         Log.d(TAG, "onGoogleLoginClick: ")
         signIn()
+    }
+
+    override fun onShowPaywall(
+        eventLocation: String,
+        eventType: String,
+        paywallDisplayType: String,
+        paywallType: String
+    ) {
+        Log.d(TAG, "onShowPaywall: ")
     }
 
     override fun onSignIn(clientId: String, contentId: String) {

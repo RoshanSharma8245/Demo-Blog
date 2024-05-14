@@ -1,7 +1,6 @@
 package com.example.newsapp.fragmentClasses
 
 import ai.conscent.registrationpaywall.RegistrationPaywall
-import ai.conscent.regularpaywalls.RegularPaywall
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -147,7 +146,7 @@ class BusinessFragment : Fragment(), OnConscentListener {
         )
 //        NewPaywall.initNewPaywall()
         RegistrationPaywall.initRegistrationPaywall()
-        RegularPaywall.initRegularPaywall()
+//        RegularPaywall.initRegularPaywall()
 
 
         showSubscriptions = false
@@ -217,6 +216,10 @@ class BusinessFragment : Fragment(), OnConscentListener {
         Log.d(TAG, "onBuyPass: ")
     }
 
+    override fun onCustomLinkSlot(link: String?, contentId: String) {
+
+    }
+
     override fun onError(clientId: String, contentId: String, errorMsg: String) {
         Log.e(TAG, "onError: $errorMsg")
     }
@@ -224,6 +227,15 @@ class BusinessFragment : Fragment(), OnConscentListener {
     override fun onGoogleLoginClick() {
         Log.d(TAG, "onGoogleLoginClick: ")
         signIn()
+    }
+
+    override fun onShowPaywall(
+        eventLocation: String,
+        eventType: String,
+        paywallDisplayType: String,
+        paywallType: String
+    ) {
+
     }
 
     override fun onSignIn(clientId: String, contentId: String) {

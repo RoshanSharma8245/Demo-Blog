@@ -7,6 +7,7 @@ import android.util.TypedValue
 import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
+import androidx.annotation.Keep
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -22,7 +23,7 @@ import com.example.newsapp.utils.Constants.NEWS_PUBLICATION_TIME
 import com.example.newsapp.utils.Constants.NEWS_SOURCE
 import com.example.newsapp.utils.Constants.NEWS_TITLE
 import com.example.newsapp.utils.Constants.NEWS_URL
-
+@Keep
 class SavedNewsActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView

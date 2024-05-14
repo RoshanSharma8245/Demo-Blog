@@ -1,5 +1,6 @@
 package com.example.newsapp.retrofit
 
+import androidx.annotation.Keep
 import com.conscent.framework.core.ConscentConfiguration
 import com.example.newsapp.BuildConfig
 import okhttp3.Credentials
@@ -25,6 +26,7 @@ object RetrofitHelper {
     }
 
 }
+@Keep
 object RetrofitBuilder {
 
     private val httpClient = OkHttpClient.Builder().addInterceptor(AuthenticationInterceptor("J1EFAQR-H0N4921-QCXKVNH-6W9ZYY9","CFR472795Q42TTQJFV84M37A5G4SJ1EFAQRH0N4921QCXKVNH6W9ZYY9"))
@@ -44,7 +46,7 @@ object RetrofitBuilder {
 
     val apiService: ApiService = getRetrofit().create(ApiService::class.java)
 }
-
+@Keep
 class AuthenticationInterceptor(user: String, password: String) : Interceptor {
 
     private val credentials: String = Credentials.basic(user, password)

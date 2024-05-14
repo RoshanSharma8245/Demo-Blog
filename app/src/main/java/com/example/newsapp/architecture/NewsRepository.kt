@@ -1,6 +1,7 @@
 package com.example.newsapp.architecture
 
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.newsapp.NewsModel
@@ -10,9 +11,10 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-
+@Keep
 class NewsRepository {
 
+    @Keep
     companion object {
 
         private var newsDatabase: NewsDatabase? = null

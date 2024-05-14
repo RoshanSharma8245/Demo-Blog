@@ -1,12 +1,14 @@
 package com.example.newsapp.architecture
 
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.newsapp.NewsModel
 import com.example.newsapp.utils.Constants.DATABASE_NAME
 
+@Keep
 @Database(entities = [NewsModel::class], version = 3, exportSchema = false)
 abstract class NewsDatabase : RoomDatabase() {
 

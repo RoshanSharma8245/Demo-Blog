@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.ui.graphics.Color
@@ -24,7 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
+@Keep
 class LoginActivity : AppCompatActivity() {
     private val TAG: String = LoginActivity::class.java.simpleName
 

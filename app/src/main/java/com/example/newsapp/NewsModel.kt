@@ -1,9 +1,11 @@
 package com.example.newsapp
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Keep
 @Entity(tableName = "News_Table")
 data class NewsModel(
 

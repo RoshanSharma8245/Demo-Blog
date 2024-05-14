@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.conscent.models.paywallConfig.PaywallConfig{*;}
+
+-keep class com.conscent.models.Journey{*;}
+-keep class ai.conscent.registrationpaywall.RegistrationPaywall{*;}
+-keep class ai.conscent.registrationpaywall.RegistrationPaywallKt{*;}
+-keep class com.conscent.framework.callbacklistener.RegistrationPaywallCallback{*;}

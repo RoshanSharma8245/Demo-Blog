@@ -2,10 +2,11 @@ package com.example.newsapp
 
 import android.app.Application
 import android.graphics.Color
+import androidx.annotation.Keep
 import com.conscent.framework.core.ConscentConfiguration
 import com.conscent.framework.core.ConscentWrapper
 //import com.example.bluepine.module.BluePine
-
+@Keep
 class TestingApplication : Application() {
     override fun onCreate() {
         super.onCreate()
