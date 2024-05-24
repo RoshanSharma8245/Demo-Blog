@@ -68,20 +68,7 @@ class BusinessFragment : Fragment(), OnConscentListener {
     var TAG = "BusinessFragment"
     override fun onResume() {
         super.onResume()
-        if (!showSubscriptions) {
-            conscent.checkContentAccess(
-                "",
-                "",
-                canSubscribe = true,
-                showClose = true
-            )
-        } else {
-            conscent.checkSubscriptions(
-                "",
-                "",
-                false,
-            )
-        }
+        conscent.checkContentAccess("",)
     }
 
     override fun onCreateView(
@@ -170,19 +157,7 @@ class BusinessFragment : Fragment(), OnConscentListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e)
-            }
-        }
+
 
         Log.i(TAG, "RedirectionHandler.onActivityResult: ")
         if (resultCode == AppCompatActivity.RESULT_OK) {
@@ -216,9 +191,9 @@ class BusinessFragment : Fragment(), OnConscentListener {
         Log.d(TAG, "onBuyPass: ")
     }
 
-    override fun onCustomLinkSlot(link: String?, contentId: String) {
-
-    }
+//    override fun onCustomLinkSlot(link: String?, contentId: String) {
+//
+//    }
 
     override fun onError(clientId: String, contentId: String, errorMsg: String) {
         Log.e(TAG, "onError: $errorMsg")
@@ -226,17 +201,16 @@ class BusinessFragment : Fragment(), OnConscentListener {
 
     override fun onGoogleLoginClick() {
         Log.d(TAG, "onGoogleLoginClick: ")
-        signIn()
     }
 
-    override fun onShowPaywall(
-        eventLocation: String,
-        eventType: String,
-        paywallDisplayType: String,
-        paywallType: String
-    ) {
-
-    }
+//    override fun onShowPaywall(
+//        eventLocation: String,
+//        eventType: String,
+//        paywallDisplayType: String,
+//        paywallType: String
+//    ) {
+//
+//    }
 
     override fun onSignIn(clientId: String, contentId: String) {
         Log.d(TAG, "signIn: ")
@@ -264,80 +238,5 @@ class BusinessFragment : Fragment(), OnConscentListener {
     ) {
         Log.d(TAG, "eventParams: $paywallId, $contentId, $paywallType, $clientId, $anonId")
     }
-    companion object {
-        private const val RC_SIGN_IN = 9001
-    }
 
-    // [START signin]
-    private fun signIn() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-
-    // [START auth_with_google]
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    updateUI(user)
-                    autoLogin(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    updateUI(null)
-                }
-            }
-    }
-    // [END auth_with_google]
-
-    private fun updateUI(user: FirebaseUser?) {
-        Log.d("firebaseAuthWithGoogle", "called")
-
-        Log.d("firebaseAuthWithGoogle", "${user?.email}")
-        Log.d("firebaseAuthWithGoogle", "${user?.displayName}")
-        Log.d("firebaseAuthWithGoogle", "${user?.photoUrl}")
-        Log.d("firebaseAuthWithGoogle", "${user?.isAnonymous}")
-    }
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun autoLogin(user: FirebaseUser?) {
-        val email = user?.email
-        val phoneNumber = ""
-        var tempToken: TempAuthTokenResponse? = null
-        var message:String
-
-
-        lifecycleScope.launch {
-            try {
-                tempToken = withContext(Dispatchers.IO) {
-                    RetrofitBuilder.apiService.generateTempToken(GenerateToken(email!!, phoneNumber))
-                }
-            }catch (e:Exception){
-                message = e.localizedMessage?.toString() ?: "ERROR"
-            }
-
-            Log.i(TAG, "TempToken: $tempToken")
-
-            if (tempToken?.error != null){
-                tempToken?.message.let {
-                    message = it ?: tempToken?.error!!
-                }
-            }else{
-                message = tempToken?.tempAuthToken.toString()
-                val encodedEmail =  Base64.getEncoder().encodeToString(email!!.toByteArray())
-                tempToken?.tempAuthToken?.let {
-                    ConscentWrapper.INSTANCE?.autoLogin(
-                        email = encodedEmail,
-                        phoneNumber = phoneNumber,
-                        clientActivity = requireActivity(),
-                        tempToken = it
-                    )
-                }
-            }
-        }
-    }
 }

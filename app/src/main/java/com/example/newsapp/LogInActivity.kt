@@ -15,7 +15,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.conscent.framework.core.ConscentWrapper
-import com.conscent.models.UserDetails
 import com.example.newsapp.databinding.ActivityLogInBinding
 import com.example.newsapp.retrofit.GenerateToken
 import com.example.newsapp.retrofit.RetrofitBuilder
@@ -30,7 +29,6 @@ class LoginActivity : AppCompatActivity() {
     private val TAG: String = LoginActivity::class.java.simpleName
 
     private lateinit var binding: ActivityLogInBinding
-    var userDetails:UserDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,11 +95,11 @@ class LoginActivity : AppCompatActivity() {
             }else{
                 message = tempToken?.tempAuthToken.toString()
                 val islogin = tempToken?.tempAuthToken?.let {
-                    ConscentWrapper.INSTANCE?.autoLogin(
-                        phoneNumber = phoneNumber,
-                        clientActivity = this@LoginActivity,
-                        tempToken = it
-                    )
+//                    ConscentWrapper.INSTANCE?.autoLogin(
+//                        phoneNumber = phoneNumber,
+//                        clientActivity = this@LoginActivity,
+//                        tempToken = it
+//                    )
                 }
             }
 

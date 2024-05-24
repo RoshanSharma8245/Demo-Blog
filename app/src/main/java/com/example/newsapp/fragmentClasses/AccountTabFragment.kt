@@ -87,21 +87,7 @@ class AccountTabFragment : Fragment() {
     }
 
     private fun logoutUser() {
-        CoroutineScope(Job()).launch {
-            val logoutResponse = ConscentWrapper.INSTANCE?.logoutUser()
-            Log.i(TAG, "logoutUser: $logoutResponse")
-            withContext(Dispatchers.Main) {
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Logout")
-                    .setMessage(logoutResponse?.message)
-                    .setCancelable(true)
-                    .setPositiveButton("Ok") { dialog, _ ->
-                        requireActivity().recreate()
-                        dialog.dismiss()
-                    }
-                    .show()
-            }
-        }
+
     }
 
     private fun showUserDetails():UserDetails? {

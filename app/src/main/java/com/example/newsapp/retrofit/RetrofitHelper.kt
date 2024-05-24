@@ -35,10 +35,10 @@ object RetrofitBuilder {
     private fun getRetrofit(): Retrofit {
         logging.setLevel(HttpLoggingInterceptor.Level.HEADERS)
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-        if (com.conscent.plugin.BuildConfig.DEBUG) httpClient.addInterceptor(logging)
+//        if (com.conscent.plugin.BuildConfig.DEBUG) httpClient.addInterceptor(logging)
 
         return Retrofit.Builder()
-            .baseUrl(ConscentConfiguration.getConscentUrl(ConscentConfiguration.TAG)!!)
+//            .baseUrl(ConscentConfiguration.getConscentUrl(ConscentConfiguration.TAG)!!)
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient.build())
             .build()
