@@ -1,6 +1,7 @@
 package com.example.newsapp
 
 import ai.conscent.registrationpaywall.RegistrationPaywall
+import ai.conscent.regularpaywalls.RegularPaywall
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -184,7 +185,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
 //            MeterBanner.initMeterBanner()
             RegistrationPaywall.initRegistrationPaywall() /***  Registration Paywall in beta  ***/
 //            TimerPaywall.initTimerPaywall() /***  Timer Paywall in beta  ***/
-//            RegularPaywall.initRegularPaywall()
+            RegularPaywall.initRegularPaywall()
 //            NewPaywall.initNewPaywall()
 
 

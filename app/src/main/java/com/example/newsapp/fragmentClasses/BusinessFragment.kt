@@ -1,6 +1,7 @@
 package com.example.newsapp.fragmentClasses
 
 import ai.conscent.registrationpaywall.RegistrationPaywall
+import ai.conscent.regularpaywalls.RegularPaywall
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -146,7 +147,7 @@ class BusinessFragment : Fragment(), OnConscentListener {
         )
 //        NewPaywall.initNewPaywall()
         RegistrationPaywall.initRegistrationPaywall()
-//        RegularPaywall.initRegularPaywall()
+        RegularPaywall.initRegularPaywall()
 
 
         showSubscriptions = false
