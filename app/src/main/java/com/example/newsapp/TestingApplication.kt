@@ -23,9 +23,9 @@ class TestingApplication : Application() {
 
         ConscentWrapper.configure(
             this,
-            "6603e4eba45bc99799752b88",
+            "661907c2487ae1aba956dcc4",
             ConscentConfiguration.APP_MODE.DEBUG,
-            ConscentConfiguration.MODE.STAGE,
+            ConscentConfiguration.MODE.SANDBOX,
         )
 
 //        BluePine.setPartnerIdAndUserId("98765412301", "sourav@conscent.ai") // BluePine SDK need to update

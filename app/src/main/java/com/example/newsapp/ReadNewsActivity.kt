@@ -168,7 +168,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
                 this
             )
 //            MeterBanner.initMeterBanner()
-//            RegistrationPaywall.initRegistrationPaywall() /***  Registration Paywall in beta  ***/
+            RegistrationPaywall.initRegistrationPaywall() /***  Registration Paywall in beta  ***/
 //            TimerPaywall.initTimerPaywall() /***  Timer Paywall in beta  ***/
 //            RegularPaywall.initRegularPaywall()
             NewPaywall.initNewPaywall()
@@ -196,10 +196,10 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
         Log.i("Result", "RedirectionHandler.onActivityResult: ")
         if (resultCode == RESULT_OK) {
             if (data?.getStringExtra("TYPE") == "PLANS") {
-                conscent.checkSubscriptions(
-                    "TestingPreferences.getContentTitle()",
-                    "TestingPreferences.getSubscriptionUrl()",
-                )
+//                conscent.checkSubscriptions(
+//                    "TestingPreferences.getContentTitle()",
+//                    "TestingPreferences.getSubscriptionUrl()",
+//                )
             } else
                 conscent.handledIntent()
         }

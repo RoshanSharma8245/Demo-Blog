@@ -162,10 +162,10 @@ class BusinessFragment : Fragment(), OnConscentListener {
         Log.i(TAG, "RedirectionHandler.onActivityResult: ")
         if (resultCode == AppCompatActivity.RESULT_OK) {
             if (data?.getStringExtra("TYPE") == "PLANS") {
-                conscent.checkSubscriptions(
-                    "",
-                    "",
-                )
+//                conscent.checkSubscriptions(
+//                    "",
+//                    "",
+//                )
             } else
                 conscent.handledIntent()
         }
