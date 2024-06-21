@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.conscent.framework.callbacklistener.OnConscentListener
 import com.conscent.framework.core.Conscent
 import com.conscent.framework.core.ConscentWrapper
+import com.example.new_meterbanner.MeterBanner
+import com.example.new_paywalls.Paywall
 import com.example.newsapp.NewsModel
 import com.example.newsapp.R
 import com.example.newsapp.ReadNewsActivity
@@ -131,9 +133,9 @@ class BusinessFragment : Fragment(), OnConscentListener {
             "Client-Story-Id-1",
             this
         )
-//        NewPaywall.initNewPaywall()
+        Paywall.initNewPaywall()
         RegistrationPaywall.initRegistrationPaywall()
-//        RegularPaywall.initRegularPaywall()
+        MeterBanner.initMeterBanner()
 
 
         showSubscriptions = false
@@ -161,13 +163,7 @@ class BusinessFragment : Fragment(), OnConscentListener {
 
         Log.i(TAG, "RedirectionHandler.onActivityResult: ")
         if (resultCode == AppCompatActivity.RESULT_OK) {
-            if (data?.getStringExtra("TYPE") == "PLANS") {
-//                conscent.checkSubscriptions(
-//                    "",
-//                    "",
-//                )
-            } else
-                conscent.handledIntent()
+            conscent.handledIntent()
         }
         if (resultCode == AppCompatActivity.RESULT_OK) {
 
@@ -191,10 +187,6 @@ class BusinessFragment : Fragment(), OnConscentListener {
         Log.d(TAG, "onBuyPass: ")
     }
 
-//    override fun onCustomLinkSlot(link: String?, contentId: String) {
-//
-//    }
-
     override fun onError(clientId: String, contentId: String, errorMsg: String) {
         Log.e(TAG, "onError: $errorMsg")
     }
@@ -202,15 +194,6 @@ class BusinessFragment : Fragment(), OnConscentListener {
     override fun onGoogleLoginClick() {
         Log.d(TAG, "onGoogleLoginClick: ")
     }
-
-//    override fun onShowPaywall(
-//        eventLocation: String,
-//        eventType: String,
-//        paywallDisplayType: String,
-//        paywallType: String
-//    ) {
-//
-//    }
 
     override fun onSignIn(clientId: String, contentId: String) {
         Log.d(TAG, "signIn: ")

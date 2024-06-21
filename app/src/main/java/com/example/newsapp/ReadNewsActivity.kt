@@ -23,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import com.conscent.framework.callbacklistener.OnConscentListener
 import com.conscent.framework.core.Conscent
 import com.conscent.framework.core.ConscentWrapper
+import com.example.new_meterbanner.MeterBanner
 import com.example.new_paywalls.Paywall
 import com.example.newsapp.architecture.NewsViewModel
 import com.example.newsapp.databinding.ActivityReadNewsBinding
@@ -167,10 +168,8 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
                 "Client-Story-Id-${contentId}",
                 this
             )
-//            MeterBanner.initMeterBanner()
-            RegistrationPaywall.initRegistrationPaywall() /***  Registration Paywall in beta  ***/
-//            TimerPaywall.initTimerPaywall() /***  Timer Paywall in beta  ***/
-//            RegularPaywall.initRegularPaywall()
+            MeterBanner.initMeterBanner()
+            RegistrationPaywall.initRegistrationPaywall()
             Paywall.initNewPaywall()
 
 
