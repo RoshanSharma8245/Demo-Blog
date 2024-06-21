@@ -23,7 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import com.conscent.framework.callbacklistener.OnConscentListener
 import com.conscent.framework.core.Conscent
 import com.conscent.framework.core.ConscentWrapper
-import com.example.new_paywalls.NewPaywall
+import com.example.new_paywalls.Paywall
 import com.example.newsapp.architecture.NewsViewModel
 import com.example.newsapp.databinding.ActivityReadNewsBinding
 import com.example.newsapp.retrofit.GenerateToken
@@ -171,7 +171,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
             RegistrationPaywall.initRegistrationPaywall() /***  Registration Paywall in beta  ***/
 //            TimerPaywall.initTimerPaywall() /***  Timer Paywall in beta  ***/
 //            RegularPaywall.initRegularPaywall()
-            NewPaywall.initNewPaywall()
+            Paywall.initNewPaywall()
 
 
 
