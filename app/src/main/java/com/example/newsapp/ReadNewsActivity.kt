@@ -1,5 +1,6 @@
 package com.example.newsapp
 
+import ai.conscent.meterbanner.MeterBanner
 import ai.conscent.registrationpaywall.RegistrationPaywall
 import ai.conscent.regularpaywalls.RegularPaywall
 import android.content.Intent
@@ -182,7 +183,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
                 "Client-Story-Id-${contentId}",
                 this
             )
-//            MeterBanner.initMeterBanner()
+            MeterBanner.initMeterBanner()
             RegistrationPaywall.initRegistrationPaywall() /***  Registration Paywall in beta  ***/
 //            TimerPaywall.initTimerPaywall() /***  Timer Paywall in beta  ***/
             RegularPaywall.initRegularPaywall()
@@ -213,7 +214,7 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         Log.d("Touch", "touch_event_has_occured")
         if (this::conscent.isInitialized) {
-            conscent.onTouch()
+//            conscent.onTouch()
         }
         return super.dispatchTouchEvent(event)
     }
