@@ -375,6 +375,10 @@ class ReadNewsActivity : AppCompatActivity(), TextToSpeech.OnInitListener, OnCon
         Log.d(TAG, "onGoogleLoginClick: ")
     }
 
+    override fun onLoginSuccess(message: String, userId: String, authToken: String) {
+        Log.d(TAG, "onLoginSuccess: message: $message, userId: $userId, authToken: $authToken")
+    }
+
 //    override fun onShowPaywall(
 //        eventLocation: String,
 //        eventType: String,

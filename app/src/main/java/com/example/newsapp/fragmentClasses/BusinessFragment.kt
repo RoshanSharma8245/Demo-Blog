@@ -195,6 +195,10 @@ class BusinessFragment : Fragment(), OnConscentListener {
         Log.d(TAG, "onGoogleLoginClick: ")
     }
 
+    override fun onLoginSuccess(message: String, userId: String, authToken: String) {
+        Log.d(TAG, "onLoginSuccess: message: $message, userId: $userId, authToken: $authToken")
+    }
+
     override fun onSignIn(clientId: String, contentId: String) {
         Log.d(TAG, "signIn: ")
     }
