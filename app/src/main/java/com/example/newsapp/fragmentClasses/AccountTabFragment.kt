@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.conscent.framework.core.ConscentWrapper
 import com.conscent.models.UserDetails
 //import com.example.bluepine.module.BluePine
@@ -28,7 +29,7 @@ class AccountTabFragment : Fragment() {
     val TAG = AccountTabFragment::class.java.simpleName
 
     private lateinit var binding: FragmentAccountTabBinding
-    var userDetails:UserDetails? = null
+    var userDetails: UserDetails? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,8 +50,6 @@ class AccountTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
-
     }
 
     override fun onResume() {
@@ -61,24 +60,42 @@ class AccountTabFragment : Fragment() {
 
         binding.accountMenuNavView.setNavigationItemSelectedListener {
             when (it.groupId) {
-                R.id.loyalty ->{
+                R.id.loyalty -> {
 //                    BluePine.stateBluePine(requireContext())
                 }
-                R.id.logout ->{
-                    logoutUser()
+
+                R.id.logout -> {
+                    lifecycleScope.launch {
+                        ConscentWrapper.INSTANCE?.onSSOLogOut(
+                            requireActivity(),
+                            onLogOutSuccess = { message->
+                                Log.i(TAG, "logoutUser: $message")
+                            })
+                    }
+
                 }
-                R.id.login ->{
-                    val intent = Intent(requireContext(),LoginActivity::class.java)
-                    startActivity(intent)
+
+                R.id.login -> {
+                    lifecycleScope.launch {
+                        ConscentWrapper.INSTANCE?.onSSOLogin(
+                            requireActivity(),
+                            onLoginSuccess = { message: String,
+                                               userId: String,
+                                               authToken: String ->
+                                Log.d("onSSOLogin", "$message, $userId, $authToken, ")
+
+                            })
+                    }
+
                 }
 
             }
             true
         }
 
-        if (ConscentWrapper.INSTANCE?.isLoggedIn() == true) {
+        if (ConscentWrapper.INSTANCE?.isLoggedInSameActivity() == true) {
             binding.accountMenuNavView.menu[1].isVisible = false
-        }else{
+        } else {
             binding.accountMenuNavView.menu[2].isVisible = false
         }
 
@@ -86,14 +103,10 @@ class AccountTabFragment : Fragment() {
 
     }
 
-    private fun logoutUser() {
-
-    }
-
-    private fun showUserDetails():UserDetails? {
+    private fun showUserDetails(): UserDetails? {
         CoroutineScope(Job()).launch {
             userDetails = ConscentWrapper.INSTANCE?.getUserDetails()
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 binding.name.text = userDetails?.phoneNumber
             }
 
